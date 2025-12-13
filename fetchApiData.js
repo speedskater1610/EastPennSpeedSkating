@@ -4,10 +4,13 @@
 function fetchApi(skater, distance, season) {
     const apiUrl =
         `https://speedskatingresults.com/api/xml/skater_results.php` +
-        `?skater=${skater}&distance=${distance}&season=${season}`; // skater info
+        `?skater=${skater}&distance=${distance}&season=${season}`;
 
     const corsProxy =
         `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
+
+    const output = document.getElementById("output");
+    output.textContent = "Loading…";
 
     fetch(corsProxy)
         .then(res => res.text())
@@ -15,17 +18,24 @@ function fetchApi(skater, distance, season) {
             const parser = new DOMParser();
             const xml = parser.parseFromString(xmlText, "application/xml");
 
-            const output = document.getElementById("output");
+            if (xml.querySelector("parsererror")) {
+                throw new Error("Failed to parse XML");
+            }
+
             output.innerHTML = "";
 
             xml.querySelectorAll("result").forEach(r => {
-                const time = r.querySelector("time")?.textContent;
-                const date = r.querySelector("date")?.textContent;
-                const location = r.querySelector("location")?.textContent;
+                const time = r.querySelector("time")?.textContent ?? "—";
+                const date = r.querySelector("date")?.textContent ?? "—";
+                const location = r.querySelector("location")?.textContent ?? "—";
 
-                output.innerHTML += `<div>${date} — ${time} @ ${location}</div>`;
+                const div = document.createElement("div");
+                div.textContent = `${date} — ${time} @ ${location}`;
+                output.appendChild(div);
             });
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+            console.error(err);
+            output.textContent = "Failed to load results.";
+        });
 }
-
