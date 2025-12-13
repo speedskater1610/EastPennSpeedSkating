@@ -1,10 +1,28 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en_ca">
     <head>
-       <title>East penn speed skating site</title>
+        <meta charset="UTF-8">
+        <title>East Penn Speed Skating Results</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                padding: 20px;
+            }
+            #output div {
+                margin-bottom: 6px;
+            }
+        </style>
     </head>
-    <body>
-        <h1>russel is gay</h1>
-    </body>
+        <body>
+            <h1>Speed Skating Results</h1>
+
+            <button onclick="fetchApi(110684, 500, 2025)">
+                Load Results
+            </button>
+
+            <div id="output"></div>
+
+            <script src="fetchApiData.js"></script>
+        </body>
 </html>
