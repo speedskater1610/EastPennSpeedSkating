@@ -2,35 +2,30 @@
 * the `fetchApi()` funtion returns the 
 */
 function fetchApi(skater, distance, season) {
-    const url = `https://speedskatingresults.com/api/xml/skater_results.php?skater=${skater}&distance=${distance}&season=${season}`;
+    const apiUrl =
+        `https://speedskatingresults.com/api/xml/skater_results.php` +
+        `?skater=${skater}&distance=${distance}&season=${season}`; // skater info
 
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.text(); 
-        })
+    const corsProxy =
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
+
+    fetch(corsProxy)
+        .then(res => res.text())
         .then(xmlText => {
             const parser = new DOMParser();
             const xml = parser.parseFromString(xmlText, "application/xml");
 
-            const results = xml.querySelectorAll("result");
-
             const output = document.getElementById("output");
             output.innerHTML = "";
 
-            results.forEach(result => {
-                const time = result.querySelector("time")?.textContent;
-                const date = result.querySelector("date")?.textContent;
-                const location = result.querySelector("location")?.textContent;
+            xml.querySelectorAll("result").forEach(r => {
+                const time = r.querySelector("time")?.textContent;
+                const date = r.querySelector("date")?.textContent;
+                const location = r.querySelector("location")?.textContent;
 
-                const div = document.createElement("div");
-                div.textContent = `${date} — ${time} @ ${location}`;
-                output.appendChild(div);
+                output.innerHTML += `<div>${date} — ${time} @ ${location}</div>`;
             });
         })
-        .catch(error => {
-            console.error("Reading API Error:", error);
-        });
+        .catch(err => console.error(err));
 }
+
