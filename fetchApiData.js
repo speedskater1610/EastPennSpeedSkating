@@ -1,3 +1,6 @@
+/**
+* the `fetchApi()` funtion returns the 
+*/
 function fetchApi(skater, distance, season) {
     fetch(`https://speedskatingresults.com/api/xml/skater_results.php?skater=${skater}&distance=${distance}&season=${season}`)
         .then(response => {
