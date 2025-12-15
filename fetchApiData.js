@@ -1,52 +1,53 @@
-/**
-* the `fetchApi()` funtion returns the 
-*/
 class ApiReturn {
     constructor({ time, date, location, skater, distance, season }) {
-        this.time = time;
-        this.date = date;
-        this.location = location;
-        this.skater = skater;
-        this.distance = distance;
-        this.season = season;
+        Object.assign(this, { time, date, location, skater, distance, season });
     }
 }
 
-function fetchApi(skater, distance, season, outputName) {
-    const apiUrl =
-        `https://speedskatingresults.com/api/xml/skater_results.php` +
-        `?skater=${skater}&distance=${distance}&season=${season}`;
-
-    const corsProxy =
-        `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
-
+async function fetchApi(skater, distance, season, outputName) {
+    const apiUrl = `https://speedskatingresults.com/api/xml/skater_results.php?skater=${skater}&distance=${distance}&season=${season}`;
+    const corsProxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
     const output = document.getElementById(outputName);
+
     output.textContent = "Loading…";
 
-    fetch(corsProxy)
-        .then(res => res.text())
-        .then(xmlText => {
-            const parser = new DOMParser();
-            const xml = parser.parseFromString(xmlText, "application/xml");
+    try {
+        const res = await fetch(corsProxy);
+        const xmlText = await res.text();
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(xmlText, "application/xml");
 
-            if (xml.querySelector("parsererror")) {
-                throw new Error("Failed to parse XML");
-            }
+        if (xml.querySelector("parsererror")) {
+            throw new Error("Failed to parse XML");
+        }
 
-            output.innerHTML = "";
+        output.innerHTML = "";
 
-            xml.querySelectorAll("result").forEach(r => {
-                const time = r.querySelector("time")?.textContent ?? "—";
-                const date = r.querySelector("date")?.textContent ?? "—";
-                const location = r.querySelector("location")?.textContent ?? "—";
+        const results = [];
 
-                const div = document.createElement("div");
-                div.textContent = `${date} — ${time} @ ${location}`;
-                output.appendChild(div);
-            });
-        })
-        .catch(err => {
-            console.error(err);
-            output.textContent = "Failed to load results.";
+        xml.querySelectorAll("result").forEach(r => {
+            const resultData = {
+                time: r.querySelector("time")?.textContent ?? "—",
+                date: r.querySelector("date")?.textContent ?? "—",
+                location: r.querySelector("location")?.textContent ?? "—",
+                skater,
+                distance,
+                season
+            };
+            
+            // Display in page
+            const div = document.createElement("div");
+            div.textContent = `${resultData.date} — ${resultData.time} @ ${resultData.location}`;
+            output.appendChild(div);
+
+            // Store result
+            results.push(new ApiReturn(resultData));
         });
+
+        return results; // Return array of ApiReturn objects
+    } catch (err) {
+        console.error(err);
+        output.textContent = "Failed to load results.";
+        return [];
+    }
 }
