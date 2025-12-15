@@ -8,7 +8,7 @@
             body {
                 background-color: #A24857; 
                 padding: 10px; 
-                color: white;
+                color: #BDBDBD;
                 font-family: sans-serif;
             }
             #output div {
@@ -19,12 +19,15 @@
         <body>
             <h1>East Penn Long Track Speed Skating Results</h1>
 
-            <button onclick="console.log(fetchApi(110684, 500, 2025, 'output'))">
-                Load Results
-            </button>
+            <div id="getSkater">
+                <button onclick="console.log(fetchApi(110684, 500, 2025, 'output'))">
+                    Load Results
+                </button>
 
-            <div id="output"></div>
+                <div id="output"></div>
+            </div>
 
+            <!-- load scripts -->
             <script src="fetchApiData.js"></script>
         </body>
 </html>
