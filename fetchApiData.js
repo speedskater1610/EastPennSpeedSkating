@@ -1,7 +1,18 @@
 /**
 * the `fetchApi()` funtion returns the 
 */
-function fetchApi(skater, distance, season) {
+class ApiReturn {
+    constructor({ time, date, location, skater, distance, season }) {
+        this.time = time;
+        this.date = date;
+        this.location = location;
+        this.skater = skater;
+        this.distance = distance;
+        this.season = season;
+    }
+}
+
+function fetchApi(skater, distance, season, outputName) {
     const apiUrl =
         `https://speedskatingresults.com/api/xml/skater_results.php` +
         `?skater=${skater}&distance=${distance}&season=${season}`;
@@ -9,7 +20,7 @@ function fetchApi(skater, distance, season) {
     const corsProxy =
         `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
 
-    const output = document.getElementById("output");
+    const output = document.getElementById(outputName);
     output.textContent = "Loading…";
 
     fetch(corsProxy)
