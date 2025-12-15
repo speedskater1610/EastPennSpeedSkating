@@ -15,6 +15,12 @@
                 margin-bottom: 6px;
             }
         </style>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                console.log(getSkaters());
+            });
+        </script>
     </head>
         <body>
             <h1>East Penn Long Track Speed Skating Results</h1>
@@ -27,7 +33,12 @@
                 <div id="output"></div>
             </div>
 
+            <div id="leaderBoard">
+                
+            </div>
+            
             <!-- load scripts -->
             <script src="fetchApiData.js"></script>
+            <script src="readSkaterCsv.js"></script>
         </body>
 </html>
