@@ -33,12 +33,39 @@
                 <div id="output"></div>
             </div>
 
-            <div id="leaderBoard">
-                
+            <div id="leaderBoardControls">
+                <h2>Leaderboard</h2>
+
+                <label for="clubSelect">Club:</label>
+                <select id="clubSelect">
+                    <option value="all">All</option>
+                </select>
+
+                <label for="genderSelect">Gender:</label>
+                <select id="genderSelect">
+                    <option value="all">All</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                </select>
+
+                <label for="distanceSelect">Distance:</label>
+                <select id="distanceSelect">
+                    <option value="all">All</option>
+                    <option value="500">500m</option>
+                    <option value="1000">1000m</option>
+                    <option value="1500">1500m</option>
+                    <option value="3000">3000m</option>
+                </select>
+
+                <button id="searchLeaderboard">Search</button>
             </div>
+
+            <div id="leaderBoardOutput"></div>
+
             
             <!-- load scripts -->
             <script src="fetchApiData.js"></script>
             <script src="readSkaterCsv.js"></script>
+            <script src="leaderBoard.js"></script>
         </body>
 </html>
