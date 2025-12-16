@@ -1,6 +1,6 @@
 class ApiReturn {
-    constructor({ time, date, location, skater, distance, season }) {
-        Object.assign(this, { time, date, location, skater, distance, season });
+    constructor({ time, date, location, skater, distance, season, outputName }) {
+        Object.assign(this, { time, date, location, skater, distance, season, outputName });
     }
 }
 
@@ -32,7 +32,8 @@ async function fetchApi(skater, distance, season, outputName) {
                 location: r.querySelector("location")?.textContent ?? "—",
                 skater,
                 distance,
-                season
+                season, 
+                outputName
             };
             
             // Display in page
