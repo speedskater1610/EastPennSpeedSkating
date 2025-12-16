@@ -50,10 +50,15 @@ async function loadLeaders() {
 `;
 }
 
-
 function removeGender(gender, objects) {
-    return objects.filter(s => s.Gender == gender);
+    if (!Array.isArray(objects)) {
+        console.error("removeGender() expected array, got: ", objects);
+        return [];
+    }
+    return objects.filter(s => s.Gender === gender);
 }
+
 function removeClubs(club, objects) {
-    return objects.filter(s => s.Club == club)
+    if (!club) return objects;
+    return objects.filter(s => s.Club === club);
 }
