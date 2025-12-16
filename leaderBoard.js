@@ -20,10 +20,15 @@ async function loadLeaders() {
     // sort by fastest time (smallest to largest)
     apiData.sort((a, b) => {
         const parseTime = t => {
-            if (!t || t === "—") return Infinity;
-            const parts = t.split(":").map(Number); // e.g., "1:44.788"
-            return parts.length === 2 ? parts[0]*60 + parts[1] : parts[0]; 
+                if (!t || t === "—") 
+                    return Infinity;
+                if (t.includes(":")) {
+                    const [min, sec] = t.split(":").map(Number);
+                    return min*60 + sec;
+                }
+            return parseFloat(t);
         };
+
         return parseTime(a.time) - parseTime(b.time);
     });
 
