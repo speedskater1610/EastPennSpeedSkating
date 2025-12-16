@@ -1,5 +1,5 @@
 async function loadLeaders() {
-    const skaters = getSkaters();
+    const skaters = await getSkaters();
     
     const genderSelect = document.getElementById("gender").value;
     const clubSelect = document.getElementById("club").value;
