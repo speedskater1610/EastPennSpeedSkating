@@ -18,7 +18,7 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                const skaters = getSkaters();
+                const skaters = await getSkaters();
 
                 // for the leader board select club options
                 const allClubs = skaters.map(s => s.Club);
