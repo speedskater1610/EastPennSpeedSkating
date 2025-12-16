@@ -18,7 +18,20 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                console.log(getSkaters());
+                const skaters = getSkaters();
+
+                // for the leader board select club options
+                const allClubs = skaters.map(s => s.Club);
+                const uniqueClubs = [...new Set(allClubs)];
+                const clubSelect = document.getElementById("club");
+
+                uniqueClubs.forEach(club => {
+                    const option = document.createElement("option");
+                    option.value = club;
+                    option.textContent = club;
+                    clubSelect.appendChild(option);
+                });
+                
             });
         </script>
     </head>
@@ -33,9 +46,36 @@
                 <div id="output"></div>
             </div>
 
+            <!-- leader board -->
+            <div style="text-align: center;">
+                <label for="gender">Gender:</label>
+                <select name="gender" id="gender">
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                </select>
+
+                <label for="distance">Distance:</label>
+                <select name="distance" id="distance">
+                    <option value="500">500m</option>
+                    <option value="1000">1000m</option>
+                    <option value="1500">1500m</option>
+                    <option value="3000">3000m</option>
+                </select>
+
+                <label for="club">Club:</label>
+                <select name="club" id="club">
+                </select>
+
+                <button onclick="loadLeaders()">
+                    Load Leaders
+                </button>
+
+                <div id="leaderBoard"></div>
+            </div>
             
             <!-- load scripts -->
             <script src="fetchApiData.js"></script>
             <script src="readSkaterCsv.js"></script>
+            <script src="leaderBoard.js"></script>
         </body>
 </html>
