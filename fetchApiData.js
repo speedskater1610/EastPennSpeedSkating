@@ -7,9 +7,12 @@ class ApiReturn {
 async function fetchApi(skater, distance, season, outputName) {
     const apiUrl = `https://speedskatingresults.com/api/xml/skater_results.php?skater=${skater}&distance=${distance}&season=${season}`;
     const corsProxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
+    
+    // check if the element exists
     const output = document.getElementById(outputName);
-
-    output.textContent = "Loading…";
+    if (output) {
+        output.textContent = "Loading…";
+    }
 
     try {
         const res = await fetch(corsProxy);
@@ -21,8 +24,6 @@ async function fetchApi(skater, distance, season, outputName) {
             throw new Error("Failed to parse XML");
         }
 
-        output.innerHTML = "";
-
         const results = [];
 
         xml.querySelectorAll("result").forEach(r => {
@@ -32,23 +33,27 @@ async function fetchApi(skater, distance, season, outputName) {
                 location: r.querySelector("location")?.textContent ?? "—",
                 skater,
                 distance,
-                season, 
+                season,
                 outputName
             };
-            
-            // Display in page
-            const div = document.createElement("div");
-            div.textContent = `${resultData.date} — ${resultData.time} @ ${resultData.location}`;
-            output.appendChild(div);
 
-            // Store result
+            // only manipulate the DOM if the element exists
+            if (output) {
+                const div = document.createElement("div");
+                div.textContent = `${resultData.date} — ${resultData.time} @ ${resultData.location}`;
+                output.appendChild(div);
+            }
+
+            // store result
             results.push(new ApiReturn(resultData));
         });
 
-        return results; // Return array of ApiReturn objects
+        return results; // array of ApiReturn objects
     } catch (err) {
         console.error(err);
-        output.textContent = "Failed to load results.";
+        if (output) {
+            output.textContent = "Failed to load results.";
+        }
         return [];
     }
 }
