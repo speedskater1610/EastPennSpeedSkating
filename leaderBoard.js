@@ -8,8 +8,10 @@ async function loadLeaders() {
     const distance = document.getElementById("distance").value;
     const currentYear = new Date().getFullYear();
 
-    let skatersFiltered = removeGender(genderSelect, skaters);
-    skatersFiltered = removeClubs(clubSelect, skatersFiltered);
+    let skatersFiltered = skaters.filter(skater => skater.Gender == genderSelect); // filter out when it is the wrong gender
+    skatersFiltered = skatersFiltered.filter(skater => skater.Club == clubSelect); // filter out the clubs 
+
+    console.log("filtered skaters are " + skatersFiltered);
 
     let apiData = new Array();
     for (const skater of skatersFiltered) {
@@ -53,17 +55,4 @@ async function loadLeaders() {
   </tbody>
 </table>
 `;
-}
-
-function removeGender(gender, objects) {
-    if (!Array.isArray(objects)) {
-        console.error("removeGender() expected array, got: ", objects);
-        return [];
-    }
-    return objects.filter(s => s.Gender === gender);
-}
-
-function removeClubs(club, objects) {
-    if (!club) return objects;
-    return objects.filter(s => s.Club === club);
 }
