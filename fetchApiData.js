@@ -17,6 +17,8 @@ async function fetchApi(skater, distance, season, outputName) {
     try {
         const res = await fetch(corsProxy);
         const xmlText = await res.text();
+        console.log("xml from api" + xmlText);
+
         const parser = new DOMParser();
         const xml = parser.parseFromString(xmlText, "application/xml");
 
