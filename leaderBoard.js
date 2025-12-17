@@ -8,6 +8,8 @@ async function loadLeaders() {
     const distance = document.getElementById("distance").value;
     const currentYear = new Date().getFullYear();
 
+    console.log("unfiltered skaters are " + skaters);
+    
     let skatersFiltered = skaters.filter(skater => skater.Gender == genderSelect); // filter out when it is the wrong gender
     skatersFiltered = skatersFiltered.filter(skater => skater.Club == clubSelect); // filter out the clubs 
 
